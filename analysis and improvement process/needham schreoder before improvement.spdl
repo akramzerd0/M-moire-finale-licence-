@@ -1,0 +1,69 @@
+protocol Ace (A,B,S) {
+
+secret Kas,Kbs:SessionKey;
+role A
+{
+
+const  Na,Nb-1 :Nonce;
+var Nb : Nonce;
+var Kab:  SessionKey;
+
+
+
+send_1(A,S,A,B,Na);
+recv_2(S,A,{B,Na,Kab,{Kab,A}Kbs}Kas);
+send_3(A,B,{Kab,A}Kbs);
+recv_4(B,A,{Nb} Kab);
+send_5(A,B,{Nb-1}Kab);
+claim_A1(A,Secret,Kab);
+claim_A2(A,Secret,Nb);
+claim_A3(A,Nisynch);
+
+
+
+
+}
+
+
+role S
+{
+
+var Na:Nonce;
+const Kab:  SessionKey;
+
+
+recv_1(A,S,A,B,Na) ;
+send_2(S,A,{B,Na,Kab,{Kab,A} Kbs} Kas);
+claim_S1(S,Secret,Kab);
+claim_S2(S,Nisynch);
+
+}
+
+
+role B
+{
+
+
+const Nb:Nonce;
+var Na,Nb-1:Nonce;
+var Kab: SessionKey;
+
+
+recv_3(A,B,{Kab,A} Kbs);
+send_4(B,A,{Nb} Kab);
+recv_5(A,B,{Nb-1}Kab);
+claim_B1(B,Secret,Kab);
+claim_B2(B,Secret,Nb);
+claim_B3(B,Nisynch);
+
+}
+
+
+}
+
+const Kab:SessionKey;
+const eve :Agent ;
+untrusted eve ;
+compromised Kab(eve);
+
+
